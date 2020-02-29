@@ -5,7 +5,8 @@
   "description": "Restores all indexes from backup",
   "main": "index.js",
   "scripts": {
-    "test": "standard && nyc --reporter=html mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml"
+    "test": "standard && nyc --reporter=html --reporter=text mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -31,15 +32,14 @@
     "elastic-recovery": "./bin/elastic-recovery"
   },
   "devDependencies": {
+    "coveralls": "^3.0.9",
     "mocha": "^7.0.1",
     "nyc": "^15.0.0",
     "rewire": "^4.0.1",
     "standard": "^14.3.1"
   },
   "standard": {
-    "ignore": [
-
-    ]
+    "ignore": []
   },
   "mocha": {
     "checkLeaks": true,
