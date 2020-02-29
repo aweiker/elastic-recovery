@@ -53,6 +53,16 @@ describe('Scan', function () {
       }, result)
     })
 
+    it('should use pattern for filtering snapshots', async function () {
+      const mock = _setupElasticMock({
+        's-1': ['i-1', 'i-2', 'i-3']
+      })
+
+      await sut.scan({}, 'my-repository', 's-*')
+
+      assert.strictEqual('s-*', mock.__loadSnapshots[0][2])
+    })
+
     it('should halt if no snapshots are found', async function () {
       _setupElasticMock({ })
 
