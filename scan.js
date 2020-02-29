@@ -48,7 +48,7 @@ async function scan (info, repository, pattern, onUpdate) {
 
   for (var s = 0; s < snapshots.length; s++) {
     const snapshot = snapshots[s]
-    const snapshotIndices = await elastic.loadSnapshotIndices(info, repository, snapshot)
+    const snapshotIndices = snapshot.indices
 
     var foundSnapshotIndexes = []
     for (var i = 0; i < snapshotIndices.length; i++) {
@@ -60,11 +60,11 @@ async function scan (info, repository, pattern, onUpdate) {
     }
 
     if (foundSnapshotIndexes.length > 0) {
-      await trackFoundIndex(foundSnapshotIndexes, repository, snapshot)
+      await trackFoundIndex(foundSnapshotIndexes, repository, snapshot.name)
     }
 
     if (onUpdate) {
-      onUpdate(`${snapshot} - added ${foundSnapshotIndexes.length}/${snapshotIndices.length}`)
+      onUpdate(`${snapshot.name} - added ${foundSnapshotIndexes.length}/${snapshotIndices.length}`)
     }
   }
 
