@@ -5,7 +5,8 @@
   "description": "Restores all indexes from backup",
   "main": "index.js",
   "scripts": {
-    "test": "standard && mocha"
+    "test": "standard && nyc mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml",
+    "coverage": "nyc report --reporter=html --check-coverage"
   },
   "repository": {
     "type": "git",
@@ -37,8 +38,16 @@
     "standard": "^14.3.1"
   },
   "standard": {
-    "ignore": [
-
-    ]
+    "ignore": []
+  },
+  "mocha": {
+    "checkLeaks": true,
+    "asyncOnly": true
+  },
+  "nyc": {
+    "branches": 70,
+    "lines": 80,
+    "functions": 80,
+    "statements": 80
   }
 }

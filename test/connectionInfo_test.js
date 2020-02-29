@@ -18,7 +18,7 @@ describe('ConnectionInfo', function () {
       assert.strictEqual(undefined, info.password)
     })
 
-    it('should override values in constructor', function () {
+    it('should override values in constructor', async function () {
       const options = {
         server: 'es',
         port: 443,
@@ -37,7 +37,7 @@ describe('ConnectionInfo', function () {
   })
 
   describe('#endpoint', function () {
-    it('should exclude credentials', function () {
+    it('should exclude credentials', async function () {
       const info = new ConnectionInfo()
 
       const uri = info.endpoint('_cat')
@@ -45,7 +45,7 @@ describe('ConnectionInfo', function () {
       assert.strictEqual('http://localhost:9200/_cat', uri)
     })
 
-    it('should include credentials when specified', function () {
+    it('should include credentials when specified', async function () {
       const options = {
         server: 'es',
         port: 443,
