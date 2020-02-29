@@ -22,11 +22,11 @@ jobs:
           when: always
       - run:
           name: Execute mocha tests
-          command: ./node_modules/.bin/nyc ./node_modules/.bin/mocha --reporter mocha-junit-reporter --reporter-options mochaFile=test-results/mocha/test-results.xml
+          command: ./node_modules/.bin/nyc --silent ./node_modules/.bin/mocha --reporter mocha-junit-reporter --reporter-options mochaFile=test-results/mocha/test-results.xml
           when: always
       - run:
           name: Publish code coverage
-          command: ./node_modules/.bin/nyc --reporter=html --check-coverage
+          command: ./node_modules/.bin/nyc report --reporter=html --check-coverage
           when: always
       - store_test_results:
           path: test-results
