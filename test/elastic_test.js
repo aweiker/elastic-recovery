@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+'use strict'
 
 const path = require('path')
 const rewire = require('rewire')
