@@ -2,7 +2,8 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
 jobs:
-  build-and-test:
+  test:
+    working_directory: ~/src
     executor:
       name: node/default
     steps:
@@ -10,13 +11,36 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
-            - run: npm test
-            - run: npm run coverage
-            - store_test_results:
-                path: test-results
-            - store_artifacts:
-                path: coverage
+      - run:
+          name: Execute Tests
+          command: npm test
+      - run:
+          name: Calculat Code Coverage
+          command: npm run coverage
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: coverage
+  publish:
+    working_directory: ~/src
+    executor:
+      name: node/default
+    steps:
+      - attach_workspace:
+          at: ~/src
+      - run:
+          name: Authenticate with Registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/src/.npmrc
+      - run:
+          name: Publish Package
+          command: npm publish
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - test
+      - publish:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
