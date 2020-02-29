@@ -5,7 +5,7 @@
   "description": "Restores all indexes from backup",
   "main": "index.js",
   "scripts": {
-    "test": "standard && mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml"
+    "test": "standard && nyc mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml"
   },
   "repository": {
     "type": "git",
