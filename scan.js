@@ -13,7 +13,7 @@ async function scan (info, repository, pattern, onUpdate) {
   if (onUpdate && typeof (onUpdate) !== 'function') {
     throw new Error('onUpdate should be of type function.')
   }
-  const snapshotPromise = elastic.loadSnapshots(info, repository, 'curator-iis-*2020*')
+  const snapshotPromise = elastic.loadSnapshots(info, repository, pattern)
   const indexPromise = elastic.loadIndices(info)
 
   const foundIndices = []

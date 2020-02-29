@@ -2,11 +2,10 @@
   "author": "Aaron Weiker <aaron@weiker.org>",
   "name": "elastic-recovery",
   "version": "0.0.1",
-  "description": "Restores all indexes from backup",
+  "description": "Restores all indices from backup",
   "main": "scan.js",
   "scripts": {
-    "test": "standard && nyc mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml",
-    "coverage": "nyc report --reporter=html --check-coverage"
+    "test": "standard && nyc mocha"
   },
   "repository": {
     "type": "git",
