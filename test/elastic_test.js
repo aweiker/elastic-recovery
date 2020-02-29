@@ -88,14 +88,13 @@ describe('elastic', function () {
         ]
       })
 
-      const snapshots = await sut.loadSnapshots(connection, 'my-repo', 's-*')
+      await sut.loadSnapshots(connection, 'my-repo', 's-*')
 
-      assert.deepStrictEqual(['s-2', 's-1'], snapshots)
       assert.strictEqual(1, mock.__request.length)
       assert.strictEqual('http://localhost:9200/_snapshot/my-repo/s-*', mock.__request[0][0].uri)
     })
 
-    it('should buble up elastic not loading indices', async function () {
+    it('should bubble up elastic not loading indices', async function () {
       sut.__set__('request', async function () {
         throw Error('Unexpected failure')
       })
@@ -108,6 +107,48 @@ describe('elastic', function () {
       }
 
       assert.strictEqual(true, hadError)
+    })
+
+    it('should not include failed snapshots', async function () {
+      _setupRequestMock({
+        snapshots: [
+          {
+            snapshot: 's-1',
+            indices: ['i-1'],
+            state: 'FAILED'
+          },
+          {
+            snapshot: 's-2',
+            indices: ['i-1', 'i-2'],
+            state: 'SUCCESS'
+          }
+        ]
+      })
+
+      const snapshots = await sut.loadSnapshots(connection, 'my-repo', 's-*')
+
+      assert.deepStrictEqual([{ name: 's-2', indices: ['i-1', 'i-2'] }], snapshots)
+    })
+
+    it('should include index information', async function () {
+      _setupRequestMock({
+        snapshots: [
+          {
+            snapshot: 's-1',
+            indices: ['i-1'],
+            state: 'SUCCESS'
+          },
+          {
+            snapshot: 's-2',
+            indices: ['i-1', 'i-2'],
+            state: 'SUCCESS'
+          }
+        ]
+      })
+
+      const snapshots = await sut.loadSnapshots(connection, 'my-repo', 's-*')
+
+      assert.deepStrictEqual([{ name: 's-2', indices: ['i-1', 'i-2'] }, { name: 's-1', indices: ['i-1'] }], snapshots)
     })
   })
 

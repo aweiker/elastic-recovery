@@ -34,16 +34,23 @@ async function restoreIndexFromSnapshot (info, repository, snapshot, index) {
 }
 
 async function loadSnapshots (info, repository, pattern) {
-  // Fix up this method so that it can return a snapshot and indexes in the snapshot
-  // this will prevent an N+1 lookup in elastic
-
   const options = {
     method: 'GET',
     uri: info.endpoint(`_snapshot/${repository}/${pattern}`),
     json: true
   }
   const { snapshots } = await request(options)
-  return _extractSnapshotNames(snapshots).sort().reverse()
+  return snapshots
+    .filter(s => s.state === 'SUCCESS')
+    .map(s => {
+      return {
+        name: s.snapshot,
+        indices: s.indices
+      }
+    })
+    .sort((s1, s2) => {
+      return s2.name.localeCompare(s1.name)
+    })
 }
 
 async function loadIndices (info) {
@@ -51,34 +58,7 @@ async function loadIndices (info) {
   return response.trim().split('\n')
 }
 
-async function loadSnapshotIndices (info, repository, snapshot) {
-  const options = {
-    method: 'GET',
-    uri: info.endpoint(`_snapshot/${repository}/${snapshot}`),
-    json: true
-  }
-  const { snapshots } = await request(options)
-
-  if (snapshots.length === null || snapshots.length === 0) {
-    throw new Error('Failed to load snapshot')
-  }
-
-  return snapshots[0].indices.sort()
-}
-
-function _extractSnapshotNames (snapshots) {
-  const result = []
-  for (let i = 0; i < snapshots.length; i++) {
-    var snapshot = snapshots[i]
-    if (snapshot.state === 'SUCCESS') {
-      result.push(snapshots[i].snapshot)
-    }
-  }
-  return result
-}
-
 module.exports = {
-  loadSnapshotIndices,
   loadSnapshots,
   loadIndices,
   restoreIndexFromSnapshot
