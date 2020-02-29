@@ -11,13 +11,12 @@ function _setupElasticMock (snapshots) {
   const elasticMock = {
     loadSnapshots: async function (...args) {
       elasticMock.__loadSnapshots.push(args)
-      return Object.keys(snapshots)
+      return Object.keys(snapshots).map(s => {
+        return { name: s, indices: snapshots[s] }
+      })
     },
     loadIndices: async function () {
       return []
-    },
-    loadSnapshotIndices: async function (_info, _repository, snapshot) {
-      return snapshots[snapshot]
     },
     restoreIndexFromSnapshot: async function (...args) {
       elasticMock.__restoreIndexFromSnapshot.push(args)
