@@ -1,0 +1,60 @@
+#!/usr/bin/env node
+'use strict'
+
+const fs = require('fs')
+const path = require('path')
+const scan = require(path.join(__dirname, '..', 'scan.js'))
+const { ConnectionInfo } = require(path.join(__dirname, '..', 'connectionInfo.js'))
+
+process.on('uncaughtException', (err, origin) => {
+  fs.writeSync(
+    process.stderr.fd,
+    `Caught exception: ${err}\n` +
+    `Exception origin: ${origin}`
+  )
+})
+
+require('yargs') // eslint-disable-line no-unused-expressions
+  .scriptName('elastic-recovery')
+  .usage('$0 [args]')
+  .command(
+    '$0',
+    'Restore elastic search indices from snapshots',
+    {
+      server: {
+        alias: 's',
+        default: 'localhost',
+        describe: 'elasticsearch server'
+      },
+      port: {
+        alias: 'p',
+        default: 9200,
+        describe: 'elasticsearch port'
+      },
+      protocol: {
+        default: 'http',
+        describe: 'http/https'
+      },
+      username: {
+        alias: 'u',
+        default: 'elastic',
+        describe: 'elasticsearch username'
+      },
+      password: {
+        default: 'changeme',
+        describe: 'elasticsearch password'
+      },
+      repository: {
+        describe: 'elasticsearch snapshot repository',
+        required: true
+      },
+      snapshots: {
+        default: '_all',
+        describe: 'snapshots to restore'
+      }
+    }, async function (argv) {
+      const info = new ConnectionInfo(argv)
+      await scan.scan(info, argv.repository, argv.snapshots, console.log)
+    })
+  .help()
+  .argv
