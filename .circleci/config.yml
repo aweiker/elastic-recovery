@@ -11,14 +11,23 @@ jobs:
       - node/with-cache:
           steps:
             - run:
-                name: Install NPM
+                name: Install npm packages
                 command: npm install
+            - run:
+                name: Install mocha junit reporter
+                command: npm install mocha-junit-reporter
       - run:
-          name: Execute Tests
-          command: npm test
+          name: Check Coding Conventions
+          command: ./node_modules/.bin/standard
+          when: always
+      - run:
+          name: Execute mocha tests
+          command: ./node_modules/.bin/nyc ./node_modules/.bin/mocha --reporter mocha-junit-reporter --reporter-options mochaFile=test-results/mocha/test-results.xml
+          when: always
       - run:
           name: Publish code coverage
-          command: npm run coverage
+          command: ./node_modules/.bin/nyc --reporter=html --check-coverage
+          when: always
       - store_test_results:
           path: test-results
       - store_artifacts:

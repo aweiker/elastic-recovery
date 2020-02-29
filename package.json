@@ -5,7 +5,7 @@
   "description": "Restores all indexes from backup",
   "main": "scan.js",
   "scripts": {
-    "test": "standard && nyc mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml",
+    "test": "standard && nyc mocha",
     "coverage": "nyc report --reporter=html --check-coverage"
   },
   "repository": {
