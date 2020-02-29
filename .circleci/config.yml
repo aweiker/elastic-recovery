@@ -23,6 +23,10 @@ jobs:
           path: test-results
       - store_artifacts:
           path: coverage
+      - persist_to_workspace:
+          root: ~/src
+          paths:
+            - .
   publish:
     working_directory: ~/src
     executor:
