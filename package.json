@@ -3,7 +3,7 @@
   "name": "elastic-recovery",
   "version": "0.0.1",
   "description": "Restores all indexes from backup",
-  "main": "index.js",
+  "main": "scan.js",
   "scripts": {
     "test": "standard && nyc mocha --reporter=xunit --reporter-option output=test-results/mocha/test-results.xml",
     "coverage": "nyc report --reporter=html --check-coverage"
