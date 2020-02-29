@@ -10,12 +10,14 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install
+            - run:
+                name: Install NPM
+                command: npm install
       - run:
           name: Execute Tests
           command: npm test
       - run:
-          name: Calculat Code Coverage
+          name: Publish code coverage
           command: npm run coverage
       - store_test_results:
           path: test-results
