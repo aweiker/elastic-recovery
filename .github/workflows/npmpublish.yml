@@ -14,8 +14,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: git config user.email "github@weiker.org"
-      - run: git config user.name "Build Agent"
       - run: npm ci
       - run: npm test
 
