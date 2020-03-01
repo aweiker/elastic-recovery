@@ -41,7 +41,7 @@ async function loadSnapshots (info, repository, pattern) {
   }
   const { snapshots } = await request(options)
   return snapshots
-    .filter(s => s.state === 'SUCCESS')
+    .filter(s => s.state === "SUCCESS")
     .map(s => {
       return {
         name: s.snapshot,
