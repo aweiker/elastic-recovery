@@ -184,7 +184,7 @@ describe('elastic', function () {
         await sut.restoreIndexFromSnapshot(connection, 'my-repo', 'snapshot', 'index')
       } catch (error) {
         hadError = true
-        assert.match(error.message, /not\saccepted/)
+        assert.strictEqual(1, error.message.match(/not\saccepted/).length)
       }
 
       assert.strictEqual(true, hadError)
@@ -200,7 +200,7 @@ describe('elastic', function () {
         await sut.restoreIndexFromSnapshot(connection, 'my-repo', 'snapshot', 'index')
       } catch (error) {
         hadError = true
-        assert.match(error.message, /failed/)
+        assert.strictEqual(1, error.message.match(/failed/).length)
       }
 
       assert.strictEqual(true, hadError)

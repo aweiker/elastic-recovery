@@ -92,7 +92,7 @@ describe('Scan', function () {
         updateMessages.push(message)
       })
 
-      assert.match(updateMessages[0], /Failed.*s-1/)
+      assert.strictEqual(1, updateMessages[0].match(/Failed.*s-1/).length)
     })
 
     it('should restore indexes from one snapshot if in multiple', async function () {
