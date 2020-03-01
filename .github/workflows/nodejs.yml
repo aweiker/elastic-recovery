@@ -21,3 +21,7 @@ jobs:
     - run: ./node_modules/.bin/standard
     - run: ./node_modules/.bin/nyc --silent ./node_modules/.bin/mocha
     - run: ./node_modules/.bin/nyc report --reporter=html --check-coverage
+    - uses: actions/upload-artifact@v1
+      with:
+        name: coverage-report
+        path: coverage
