@@ -13,12 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: goto-bus-stop/standard-action@v1
+      with:
+        annotate: true
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: ./node_modules/.bin/standard
     - run: ./node_modules/.bin/nyc --silent ./node_modules/.bin/mocha
     - run: ./node_modules/.bin/nyc report --reporter=html --check-coverage
     - uses: actions/upload-artifact@v1
