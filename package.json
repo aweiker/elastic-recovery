@@ -1,7 +1,7 @@
 {
   "author": "Aaron Weiker <aaron@weiker.org>",
   "name": "elastic-recovery",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Restores all indices from backup",
   "main": "scan.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "yargs": "^15.1.0"
   },
   "engines": {
-    "node" : ">=8.9.0"
+    "node": ">=8.9.0"
   },
   "keywords": [
     "elasticsearch",
