@@ -34,7 +34,7 @@
     "elastic-recovery": "./bin/elastic-recovery"
   },
   "devDependencies": {
-    "mocha": "^7.0.1",
+    "mocha": "^10.2.0",
     "nyc": "^15.0.0",
     "rewire": "^4.0.1",
     "standard": "^14.3.1"
